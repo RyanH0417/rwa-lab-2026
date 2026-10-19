@@ -1,50 +1,51 @@
+
 ## System Architecture
 
 The diagram below illustrates the tokenized fund architecture, showing how underlying assets (Cash) and Fund Shares cross the "Bridge" between the physical world (Custodian) and the on-chain world (Smart Contracts).
 
 ```text
-       OFF-CHAIN (Physical World)                      ON-CHAIN (Smart Contracts)
- ┌─────────────────────────────────┐            ┌─────────────────────────────────────────┐
- │                                 │            │                                         │
- │     [ Custodian / Bank ]        │            │     [ Tokenized Fund Contract ]         │
- │                                 │            │                                         │
- │   Holds Real Assets (Cash)      │            │   Tracks Accounting & Ownership         │
- │                                 │            │                                         │
- └────────────────┬────────────────┘            └────────────────────┬────────────────────┘
-                  │                                                  │
-                  │                                                  │
-                  │                  THE BRIDGE                      │
-                  │                                                  │
-                  │       ┌──────────────────────────────┐           │
-                  │       │                              │           │
-     [ CASH ] ────┼──────►│        Plank A               │           │
-  (Moves via Wire)│       │   Custody vs. Accounting     │           │
-                  │       │   (Are realHoldings() ==     │           │
-                  │       │    Contract Balance?)        │           │
-                  │       ├──────────────────────────────┤           │
-                  │       │                              │           │
-                  │       │        Plank B               │           │
-                  │       │   Valuation Mechanism        │           │
-                  │       │   (How is 1 Share priced?)   │           │
-                  │       ├──────────────────────────────┤           │
-                  │       │                              │           │
-                  │       │        Plank C               │           │
-                  │       │   Redemption / Liquidity     │           │
-                  │       │   (Can users exit smoothly?) │           │
-                  │       ├──────────────────────────────┤           │
-                  │       │                              │           │
-                  │       │        Plank D               │           │
-                  │       │   Access Control & KYC       │           │
-                  │       │   (Who can hold/transfer?)   │           │
-                  │       └──────────────┬───────────────┘           │
-                  │                      │                           │
-                  │                      │                           │
-     [ SHARES ] ──┼──────────────────────┼──────────────────────────►│
-  (Moves via Tx)  │                      │                           │
-                  │                      │                           │
-                  ▼                      ▼                           ▼
-         [ Attestation ]          [ Whitelist / KYC ]          [ User Wallets ]
-
+      OFF-CHAIN (Physical World)                      ON-CHAIN (Smart Contracts)
+┌─────────────────────────────────┐            ┌─────────────────────────────────────────┐
+│                                 │            │                                         │
+│     [ Custodian / Bank ]        │            │     [ Tokenized Fund Contract ]         │
+│                                 │            │                                         │
+│   Holds Real Assets (Cash)      │            │   Tracks Accounting & Ownership         │
+│                                 │            │                                         │
+└────────────────┬────────────────┘            └────────────────────┬────────────────────┘
+                 │                                                  │
+                 │                                                  │
+                 │                  THE BRIDGE                      │
+                 │                                                  │
+                 │       ┌──────────────────────────────┐           │
+                 │       │                              │           │
+    [ CASH ] ────┼──────►│        Plank A               │           │
+ (Moves via Wire)│       │   Custody vs. Accounting     │           │
+                 │       │   (Are realHoldings() ==     │           │
+                 │       │    Contract Balance?)        │           │
+                 │       ├──────────────────────────────┤           │
+                 │       │                              │           │
+                 │       │        Plank B               │           │
+                 │       │   Valuation Mechanism        │           │
+                 │       │   (How is 1 Share priced?)   │           │
+                 │       ├──────────────────────────────┤           │
+                 │       │                              │           │
+                 │       │        Plank C               │           │
+                 │       │   Redemption / Liquidity     │           │
+                 │       │   (Can users exit smoothly?) │           │
+                 │       ├──────────────────────────────┤           │
+                 │       │                              │           │
+                 │       │        Plank D               │           │
+                 │       │   Access Control & KYC       │           │
+                 │       │   (Who can hold/transfer?)   │           │
+                 │       └──────────────┬───────────────┘           │
+                 │                      │                           │
+                 │                      │                           │
+    [ SHARES ] ──┼──────────────────────┼──────────────────────────►│
+ (Moves via Tx)  │                      │                           │
+                 │                      │                           │
+                 ▼                      ▼                           ▼
+        [ Attestation ]          [ Whitelist / KYC ]          [ User Wallets ]
+```
 ## Deployment (Sepolia)
 
 The RWA T-Bill protocol was deployed to the **Ethereum Sepolia Testnet** using Foundry. The seven deployed smart contracts have been verified on Etherscan.
