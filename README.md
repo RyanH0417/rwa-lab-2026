@@ -1,3 +1,47 @@
+
+## Deployment (Sepolia)
+
+The RWA T-Bill protocol was deployed to the **Ethereum Sepolia Testnet** using Foundry. The seven deployed smart contracts have been verified on Etherscan.
+
+### Deployed Contracts
+
+| Contract | Contract Address | Etherscan |
+|---|---|---|
+| MockUSDC | `0xe784caeebb9773a8b26207e35c873d6bb3b9b2ad` | [View on Etherscan](https://sepolia.etherscan.io/address/0xe784caeebb9773a8b26207e35c873d6bb3b9b2ad#code) |
+| ComplianceRegistry | `0x6198d60b7e27d04ac8023ac44a061614f342d789` | [View on Etherscan](https://sepolia.etherscan.io/address/0x6198d60b7e27d04ac8023ac44a061614f342d789#code) |
+| MockPriceFeed | `0x1dbf64b1e2cda94147ddace39fb2a0939ca07282` | [View on Etherscan](https://sepolia.etherscan.io/address/0x1dbf64b1e2cda94147ddace39fb2a0939ca07282#code) |
+| TBillToken | `0x627b980bb30462f34d4a1611c2f4b6de9030120c` | [View on Etherscan](https://sepolia.etherscan.io/address/0x627b980bb30462f34d4a1611c2f4b6de9030120c#code) |
+| MockTBillCustodian | `0x23ecc7268a015f8620bcb5327966ec8cdf5df389` | [View on Etherscan](https://sepolia.etherscan.io/address/0x23ecc7268a015f8620bcb5327966ec8cdf5df389#code) |
+| TBillVault | `0xb6d130e990621836f666e198a783bec29dcd8e61` | [View on Etherscan](https://sepolia.etherscan.io/address/0xb6d130e990621836f666e198a783bec29dcd8e61#code) |
+| RedemptionQueue | `0x116072012868716882aedce8230e4caee5abbc39` | [View on Etherscan](https://sepolia.etherscan.io/address/0x116072012868716882aedce8230e4caee5abbc39#code) |
+
+### Contract Overview
+
+- **MockUSDC:** Mock ERC-20 stablecoin used for subscriptions and redemption settlements.
+- **ComplianceRegistry:** Maintains the compliance whitelist for permissioned token transfers.
+- **MockPriceFeed:** Simulates the Net Asset Value (NAV) price feed for Treasury bills.
+- **TBillToken:** Represents tokenized Treasury bill shares with role-based access control.
+- **MockTBillCustodian:** Simulates custody of the underlying Treasury bill assets.
+- **TBillVault:** Manages subscriptions, share issuance, and reserve balances.
+- **RedemptionQueue:** Handles redemption requests, settlement, and claims.
+
+### Deployment Details
+
+- **Network:** Ethereum Sepolia Testnet
+- **Chain ID:** `11155111`
+- **Framework:** Foundry
+- **Deployment Script:** `script/Deploy.s.sol`
+- **Verification:** Etherscan
+- **Block Explorer:** https://sepolia.etherscan.io/
+
+### Security
+
+Deployment uses a dedicated throwaway testnet wallet. The private key is stored locally in `.env`, which is excluded from version control via `.gitignore`.
+
+No private keys or sensitive credentials are committed to the repository.
+
+All deployed contracts are intended for educational and testing purposes only.
+
 # Lab 2 — How to Tokenize an RWA (Tokenized T-Bills)
 
 In Lab 1 the collateral was **itself a token**. That is why the whole thing could prove itself:
