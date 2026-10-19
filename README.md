@@ -1,3 +1,49 @@
+## System Architecture
+
+The diagram below illustrates the tokenized fund architecture, showing how underlying assets (Cash) and Fund Shares cross the "Bridge" between the physical world (Custodian) and the on-chain world (Smart Contracts).
+
+```text
+       OFF-CHAIN (Physical World)                      ON-CHAIN (Smart Contracts)
+ ┌─────────────────────────────────┐            ┌─────────────────────────────────────────┐
+ │                                 │            │                                         │
+ │     [ Custodian / Bank ]        │            │     [ Tokenized Fund Contract ]         │
+ │                                 │            │                                         │
+ │   Holds Real Assets (Cash)      │            │   Tracks Accounting & Ownership         │
+ │                                 │            │                                         │
+ └────────────────┬────────────────┘            └────────────────────┬────────────────────┘
+                  │                                                  │
+                  │                                                  │
+                  │                  THE BRIDGE                      │
+                  │                                                  │
+                  │       ┌──────────────────────────────┐           │
+                  │       │                              │           │
+     [ CASH ] ────┼──────►│        Plank A               │           │
+  (Moves via Wire)│       │   Custody vs. Accounting     │           │
+                  │       │   (Are realHoldings() ==     │           │
+                  │       │    Contract Balance?)        │           │
+                  │       ├──────────────────────────────┤           │
+                  │       │                              │           │
+                  │       │        Plank B               │           │
+                  │       │   Valuation Mechanism        │           │
+                  │       │   (How is 1 Share priced?)   │           │
+                  │       ├──────────────────────────────┤           │
+                  │       │                              │           │
+                  │       │        Plank C               │           │
+                  │       │   Redemption / Liquidity     │           │
+                  │       │   (Can users exit smoothly?) │           │
+                  │       ├──────────────────────────────┤           │
+                  │       │                              │           │
+                  │       │        Plank D               │           │
+                  │       │   Access Control & KYC       │           │
+                  │       │   (Who can hold/transfer?)   │           │
+                  │       └──────────────┬───────────────┘           │
+                  │                      │                           │
+                  │                      │                           │
+     [ SHARES ] ──┼──────────────────────┼──────────────────────────►│
+  (Moves via Tx)  │                      │                           │
+                  │                      │                           │
+                  ▼                      ▼                           ▼
+         [ Attestation ]          [ Whitelist / KYC ]          [ User Wallets ]
 
 ## Deployment (Sepolia)
 
@@ -15,15 +61,6 @@ The RWA T-Bill protocol was deployed to the **Ethereum Sepolia Testnet** using F
 | TBillVault | `0xb6d130e990621836f666e198a783bec29dcd8e61` | [View on Etherscan](https://sepolia.etherscan.io/address/0xb6d130e990621836f666e198a783bec29dcd8e61#code) |
 | RedemptionQueue | `0x116072012868716882aedce8230e4caee5abbc39` | [View on Etherscan](https://sepolia.etherscan.io/address/0x116072012868716882aedce8230e4caee5abbc39#code) |
 
-### Contract Overview
-
-- **MockUSDC:** Mock ERC-20 stablecoin used for subscriptions and redemption settlements.
-- **ComplianceRegistry:** Maintains the compliance whitelist for permissioned token transfers.
-- **MockPriceFeed:** Simulates the Net Asset Value (NAV) price feed for Treasury bills.
-- **TBillToken:** Represents tokenized Treasury bill shares with role-based access control.
-- **MockTBillCustodian:** Simulates custody of the underlying Treasury bill assets.
-- **TBillVault:** Manages subscriptions, share issuance, and reserve balances.
-- **RedemptionQueue:** Handles redemption requests, settlement, and claims.
 
 ### Deployment Details
 
@@ -33,14 +70,6 @@ The RWA T-Bill protocol was deployed to the **Ethereum Sepolia Testnet** using F
 - **Deployment Script:** `script/Deploy.s.sol`
 - **Verification:** Etherscan
 - **Block Explorer:** https://sepolia.etherscan.io/
-
-### Security
-
-Deployment uses a dedicated throwaway testnet wallet. The private key is stored locally in `.env`, which is excluded from version control via `.gitignore`.
-
-No private keys or sensitive credentials are committed to the repository.
-
-All deployed contracts are intended for educational and testing purposes only.
 
 # Lab 2 — How to Tokenize an RWA (Tokenized T-Bills)
 
